@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin | Post Generator</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+    <script>
+        if (sessionStorage.getItem('isLoggedIn') !== 'true') { window.location.href = "login.html"; }
+    </script>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">ADMIN PANEL</div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="#" onclick="logout()" style="color: #ff4d4d;">Logout</a></li>
+        </ul>
+    </nav>
+
+    <div class="admin-container">
+        <h2 style="text-align: center; margin-bottom: 20px;">Create New Post</h2>
+        <p style="text-align: center; color: var(--sub-text); margin-bottom: 30px; font-size: 0.9rem;">
+            Since this is hosted on GitHub, this tool will <b>generate the code</b> for you.<br>
+            Copy the result and paste it into your <code>posts.js</code> file.
+        </p>
+
+        <form id="postForm">
+            <div class="form-group">
+                <label>Title</label>
+                <input type="text" id="postTitle" class="form-input" required>
+            </div>
+            <div class="form-group">
+                <label>Date</label>
+                <input type="date" id="postDate" class="form-input" required>
+            </div>
+            <div class="form-group">
+                <label>Image URL (or file name)</label>
+                <input type="text" id="postImage" class="form-input" placeholder="e.g. images/my-pic.jpg" required>
+                <small style="color:gray;">Upload the image to your 'images' folder on GitHub first.</small>
+            </div>
+            <div class="form-group">
+                <label>Content</label>
+                <textarea id="postContent" class="form-input" rows="6" required></textarea>
+            </div>
+            <button type="submit" class="btn" style="width: 100%;">Generate Code</button>
+        </form>
+
+        <div id="outputArea" style="display: none; margin-top: 30px; background: #111; padding: 20px; border-radius: 10px; border: 1px solid #333;">
+            <h3 style="color: #fff; margin-bottom: 10px;">Copy This Code:</h3>
+            <textarea id="codeResult" style="width: 100%; height: 150px; background: #000; color: #0f0; padding: 10px; border: none; font-family: monospace;"></textarea>
+            <p style="color: #aaa; font-size: 0.8rem; margin-top: 10px;">
+                Now open <b>posts.js</b> and paste this inside the list, at the top.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function logout() {
+            sessionStorage.removeItem('isLoggedIn');
+            window.location.href = "login.html";
+        }
+
+        document.getElementById('postForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            
+            const title = document.getElementById('postTitle').value;
+            const date = document.getElementById('postDate').value;
+            const image = document.getElementById('postImage').value;
+            // Clean up content to prevent code breaking
+            const content = document.getElementById('postContent').value.replace(/"/g, '\\"').replace(/\n/g, ' ');
+
+            const codeSnippet = `    {
+        title: "${title}",
+        date: "${date}",
+        image: "${image}",
+        content: "${content}"
+    },`;
+
+            document.getElementById('outputArea').style.display = 'block';
+            document.getElementById('codeResult').value = codeSnippet;
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <link rel="icon" type="image/x-icon" href="favicon.png">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <nav>
+        <div class="logo">Janiru.</div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+        </ul>
+    </nav>
+
+    <div style="height: 80vh; display: flex; align-items: center; justify-content: center;">
+        <div class="admin-container" style="max-width: 400px; text-align: center;">
+            <h2 style="margin-bottom: 20px;">Admin Access</h2>
+            <p style="color: var(--sub-text); margin-bottom: 20px;">Please verify your identity.</p>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <input type="password" id="passwordInput" class="form-input" placeholder="Enter Password" required
+                        style="text-align: center;">
+                </div>
+                <button type="submit" class="btn" style="width: 100%;">Unlock Panel</button>
+            </form>
+            <p id="errorMsg" style="color: #ff4d4d; margin-top: 10px; display: none; font-size: 14px;">Incorrect
+                Password!</p>
+        </div>
+    </div>
+
+    <script>
+        // === CHANGE YOUR PASSWORD HERE ===
+        const MY_PASSWORD = "M&8j;QoHo7";
+
+        const loginForm = document.getElementById('loginForm');
+        const errorMsg = document.getElementById('errorMsg');
+
+        // Check if already logged in
+        if (sessionStorage.getItem('isLoggedIn') === 'true') {
+            window.location.href = "admin.html";
+        }
+
+        loginForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const input = document.getElementById('passwordInput').value;
+
+            if (input === MY_PASSWORD) {
+                // Save login state to Session Storage (clears when browser closes)
+                sessionStorage.setItem('isLoggedIn', 'true');
+                window.location.href = "admin.html";
+            } else {
+                errorMsg.style.display = "block";
+                loginForm.reset();
+            }
+        });
+    </script>
+</body>
+
+</html>
